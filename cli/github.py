@@ -6,72 +6,82 @@ import requests
 from dotenv import load_dotenv
 
 
-def main(username, token):
-    # 認証情報を設定
-    auth = (username, token)
-
-    # 過去1週間の日付を計算
+def calculate_dates():
     end_date = datetime.now()
     start_date = end_date - timedelta(days=7)
     start_date_str = start_date.strftime("%Y-%m-%d")
     end_date_str = end_date.strftime("%Y-%m-%d")
+    return start_date_str, end_date_str
 
-    # イシューを検索するAPIエンドポイントURLの設定
-    issues_url = "https://api.github.com/search/issues"
 
-    # リクエストパラメータ
+def make_request(url, auth, params):
+    response = requests.get(url, auth=auth, params=params)
+    return response
+
+
+def print_results(response, type):
+    if response.status_code == 200:
+        items = response.json()["items"]
+        for item in items:
+            print(item["title"], item["html_url"], item["state"], item["body"])
+            print("---------------------------------------------")
+    else:
+        print(f"Failed to fetch {type}:", response.status_code, response.text)
+
+
+def main(username, token, start_date=None, end_date=None):
+    auth = (username, token)
+
+    if start_date and end_date:
+        start_date_str = start_date
+        end_date_str = end_date
+    else:
+        start_date_str, end_date_str = calculate_dates()
+
+    url = "https://api.github.com/search/issues"
+
+    print(
+        f"GitHub activity summary for {username} from {start_date_str} to {end_date_str}"
+        f" (created or merged issues, reviewed PRs):"
+    )
+
+    print("=============================================")
+    # Fetch created issues
+    print("Created Issues:")
     params = {"q": f"author:{username} type:issue created:{start_date_str}..{end_date_str}"}
+    response = make_request(url, auth, params)
+    print_results(response, "issues")
 
-    # APIリクエストを実行してデータを取得
-    response = requests.get(issues_url, auth=auth, params=params)
+    print("=============================================")
 
-    # 結果を確認
-    if response.status_code == 200:
-        issues = response.json()["items"]
-        for issue in issues:
-            print(issue["title"], issue["html_url"], issue["state"], issue["body"])
-    else:
-        print("Failed to fetch issues:", response.status_code, response.text)
+    # Fetch closed issues
+    print("Closed Issues:")
+    params = {"q": f"author:{username} type:issue closed:{start_date_str}..{end_date_str}"}
+    response = make_request(url, auth, params)
+    print_results(response, "issues")
 
-    # プルリクエストを検索するAPIエンドポイントURLの設定
-    prs_url = "https://api.github.com/search/issues"
+    print("=============================================")
 
-    # リクエストパラメータ
+    print("Merged PRs:")
+    # Fetch PRs
     params = {"q": f"author:{username} type:pr merged:{start_date_str}..{end_date_str}"}
+    response = make_request(url, auth, params)
+    print_results(response, "PRs")
 
-    # APIリクエストを実行してデータを取得
-    response = requests.get(prs_url, auth=auth, params=params)
+    print("=============================================")
 
-    # 結果を確認
-    if response.status_code == 200:
-        prs = response.json()["items"]
-        for pr in prs:
-            print(pr["title"], pr["html_url"], pr["state"], pr["body"])
-    else:
-        print("Failed to fetch PRs:", response.status_code, response.text)
-
-    # レビューしたプルリクエストを検索するAPIエンドポイントURLの設定
-
-    prs_url = "https://api.github.com/search/issues"
-
-    # リクエストパラメータ
+    print("Reviewed PRs:")
+    # Fetch reviewed PRs
     params = {"q": f"reviewed-by:{username} type:pr updated:{start_date_str}..{end_date_str}"}
+    response = make_request(url, auth, params)
+    print_results(response, "reviewed PRs")
 
-    # APIリクエストを実行してデータを取得
-    response = requests.get(prs_url, auth=auth, params=params)
+    print("=============================================")
 
-    # 結果を確認
-    if response.status_code == 200:
-        prs = response.json()["items"]
-        for pr in prs:
-            print(f"PR Title: {pr['title']}")
-            print(f"PR URL: {pr['html_url']}")
-            print(f"State: {pr['state']}")
-            print(f"Created at: {pr['created_at']}")
-            print(f"Merged: {'Yes' if pr.get('merged_at') else 'No'}")
-            print("---")
-    else:
-        print("Failed to fetch PRs:", response.status_code, response.text)
+    # Fetch involved PRs
+    params = {"q": f"involves:{username} type:pr updated:{start_date_str}..{end_date_str}"}
+    response = make_request(url, auth, params)
+    print_results(response, "involved PRs")
 
 
 if __name__ == "__main__":
@@ -80,6 +90,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GitHub Activity Summarizer")
     parser.add_argument("--username", required=True, help="GitHub username")
     parser.add_argument("--token", default=os.getenv("GITHUB_TOKEN"), help="GitHub personal access token")
+    parser.add_argument("--start-date", help="Start date for fetching activity")
+    parser.add_argument("--end-date", help="End date for fetching activity")
     args = parser.parse_args()
 
-    main(args.username, args.token)
+    main(args.username, args.token, args.start_date, args.end_date)
