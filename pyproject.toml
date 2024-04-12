@@ -8,8 +8,34 @@ packages = [{include = "gh_activity_summarizer", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.12"
+requests = "^2.31.0"
 
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.3.7"
+mypy = "^1.9.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 120
+extend-include = ["*.ipynb"]
+
+[tool.ruff.lint]
+select = [
+    # pycodestyle
+    "E",
+    # Pyflakes
+    "F",
+    # pyupgrade
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+]
+ignore = ["SIM108"]
