@@ -3,7 +3,7 @@ import argparse
 from gh_activity_summarizer.interfaces import claude, github
 
 
-def print_activity_summary(stream, period, model_name, stream=True):
+def print_activity_summary(period, model_name, stream=True):
     github_api = github.GithubAPI(period=period)
 
     github_activity = github_api.get_all_github_activity()

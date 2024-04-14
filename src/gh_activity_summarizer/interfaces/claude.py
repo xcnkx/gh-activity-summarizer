@@ -38,12 +38,6 @@ def get_prompt():
 - [{{ prs.title }}]({{ prs.html_url }}): {{ prs.body }}
 {% endfor %}
 
-## 他に関わったIssueやPR
----
-{% for activity in other_activity %}
-- [{{ activity.title }}]({{ activity.html_url }}): {{ activity.body }}
-{% endfor %}
-
 ## 総括
 Total created issues: {{ github_summary.created_issues }}
 Total closed issues: {{ github_summary.closed_issues }}
@@ -54,28 +48,23 @@ Total reviewed PRs: {{ github_summary.reviewed_prs }}
 あなたはソフトウェアエンジニアです。上記のGITHUBの活動情報を元に、あなたの今週の活動を要約してください。
 添付されたGitHubアクティビティのテキストを分析し、以下の項目に分けてmarkdown形式で要約してください。
 
-## 作成したIssue
-    * 新しく作成したIssueとその概要を1行で説明してください。
-    * そのIssueのURLも記載してください。
-    * 作成したIssueがない場合は「特になし」と記載してください。
-## クローズしたIssueとPR
-### クローズしたIssue
-    * クローズしたIssueについて、その内容を1行で分かりやすく説明してください。
-    * そのIssueのURLも記載してください。
-    * クローズしたIssueがない場合は「特になし」と記載してください。
-### マージされたPR
-    * マージされたPRについて、その内容を1行で分かりやすく説明してください。
-    * そのPRのURLも記載してください。
-    * マージされたPRがない場合は「特になし」と記載してください。
-## レビューしたPR
-    * レビューを行ったPRについて、その内容を1行で要約してください。
-    * そのPRのURLも記載してください。
-    * レビューしたPRがない場合は「特になし」と記載してください。
-
-## 他に関わったIssueやPR
-* 上記以外で関わったIssueやPRがあれば、その内容を簡潔に説明してください。
-* そのIssueやPRのURLも記載してください。
-* 他に関わったIssueやPRがない場合は「特になし」と記載してください。
+### 作成したIssue
+    *[issueのタイトル](issueのURL)
+        * 新しく作成したIssueとその概要を2行で説明してください。
+        * 作成したIssueがない場合は「特になし」と記載してください。
+### クローズしたIssueとPR
+#### クローズしたIssue
+    *[issueのタイトル](issueのURL)
+        * クローズしたIssueについて、その内容を2行で分かりやすく説明してください。
+        * クローズしたIssueがない場合は「特になし」と記載してください。
+#### マージされたPR
+    *[PRのタイトル](PRのURL)
+        * マージされたPRについて、その内容を2行で分かりやすく説明してください。
+        * マージされたPRがない場合は「特になし」と記載してください。
+### レビューしたPR
+    *[PRのタイトル](PRのURL)
+        * レビューを行ったPRについて、その内容を2行で要約してください。
+        * レビューしたPRがない場合は「特になし」と記載してください。
 
 ## 総括
 全体的な活動内容について、以下の観点から総括を行ってください。
