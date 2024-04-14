@@ -3,7 +3,7 @@ from langchain.prompts import PromptTemplate
 from langchain_anthropic import ChatAnthropic
 
 
-def get_claude_model(model_name="claude-3-opus-20240229", temperature=0, max_tokens=1024 * 4):
+def get_claude_model(model_name, temperature=0, max_tokens=1024 * 4):
     return ChatAnthropic(
         temperature=temperature, api_key=config.anthropic_api_key, model_name=model_name, max_tokens=max_tokens
     )

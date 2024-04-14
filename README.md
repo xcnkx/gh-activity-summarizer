@@ -9,4 +9,14 @@ This is a simple python script that summarizes the activity of a github user. It
 
 ## Usage
 
-1. Run the script using `make run/cli USERNAME=<github-username>`
+1. Create a `.env` file in the root directory of the project and add the following:
+```
+GITHUB_USERNAME=<your_github_username>
+GITHUB_TOKEN=<your_github_token>
+ANTHROPIC_API_KEY=<your_anthropic_api_key>
+```
+
+2. Run the scripts using the following command for a summary of your own activity on github summarized by LLM model(claude3):
+```
+make run/llm
+``` 

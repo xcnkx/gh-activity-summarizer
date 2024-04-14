@@ -3,14 +3,14 @@ import argparse
 from gh_activity_summarizer.interfaces import claude, github
 
 
-def print_activity_summary(stream=True, period=7):
+def print_activity_summary(stream, period, model_name, stream=True):
     github_api = github.GithubAPI(period=period)
 
     github_activity = github_api.get_all_github_activity()
     github_summary = github_api.get_github_activity_summary()
 
     prompt = claude.get_prompt()
-    llm_model = claude.get_claude_model()
+    llm_model = claude.get_claude_model(model_name=model_name)
 
     chain = prompt | llm_model
 
@@ -46,6 +46,11 @@ def print_activity_summary(stream=True, period=7):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="GitHub Activity Summarizer with LLM")
     parser.add_argument("--period", help="Period for fetching activity", type=int, default=7)
+    parser.add_argument("--model", help="Model name for Claude", default="claude-3-opus-20240229")
     parser.add_argument("--not-stream", help="Stream the output", action="store_false")
     args = parser.parse_args()
-    print_activity_summary(stream=args.not_stream, period=args.period)
+    print_activity_summary(
+        period=args.period,
+        model_name=args.model,
+        stream=args.not_stream,
+    )
