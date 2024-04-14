@@ -23,4 +23,7 @@ fix:
 
 .PHONY: run/*
 run/cli:
-	$(POETRY) run python cli/summarizer.py --username $(USERNAME)
+	$(POETRY) run python cli/summarizer.py
+
+run/llm:
+	$(POETRY) run python cli/llm.py
