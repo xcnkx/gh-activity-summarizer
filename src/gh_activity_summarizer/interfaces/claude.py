@@ -38,13 +38,6 @@ def get_prompt():
 - [{{ prs.title }}]({{ prs.html_url }}): {{ prs.body }}
 {% endfor %}
 
-## 総括
-Total created issues: {{ github_summary.created_issues }}
-Total closed issues: {{ github_summary.closed_issues }}
-Total merged PRs: {{ github_summary.merged_prs }}
-Total reviewed PRs: {{ github_summary.reviewed_prs }}
-
-
 あなたはソフトウェアエンジニアです。上記のGITHUBの活動情報を元に、あなたの今週の活動を要約してください。
 添付されたGitHubアクティビティのテキストを分析し、以下の項目に分けてmarkdown形式で要約してください。
 

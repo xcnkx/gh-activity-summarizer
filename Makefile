@@ -20,10 +20,3 @@ lint:
 fix:
 	$(RUFF) check src tests --fix
 	$(RUFF) format src tests
-
-.PHONY: run/*
-run/cli:
-	$(POETRY) run python cli/summarizer.py
-
-run/llm:
-	$(POETRY) run python cli/llm.py

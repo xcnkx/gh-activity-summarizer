@@ -124,7 +124,7 @@ class GithubAPI:
         merged_prs_params = {"q": f"author:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
         merged_prs_response = self._make_request(url, self.auth, merged_prs_params)
 
-        review_params = {"q": f"reviewed-by:{self.username} type:pr updated:{self.start_date_str}..{self.end_date_str}"}
+        review_params = {"q": f"reviewed-by:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
         review_response = self._make_request(url, self.auth, review_params)
 
         created_issues_count = created_issues_response.json()["total_count"]
@@ -158,20 +158,13 @@ class GithubAPI:
         merged_prs_response = self._make_request(url, self.auth, merged_prs_params)
         merged_prs = self._get_results(merged_prs_response)
 
-        review_params = {"q": f"reviewed-by:{self.username} type:pr updated:{self.start_date_str}..{self.end_date_str}"}
+        review_params = {"q": f"reviewed-by:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
         review_response = self._make_request(url, self.auth, review_params)
         reviewed_prs = self._get_results(review_response)
-
-        involved_prs_params = {
-            "q": f"involves:{self.username} type:pr updated:{self.start_date_str}..{self.end_date_str}"
-        }
-        involved_prs_response = self._make_request(url, self.auth, involved_prs_params)
-        involved_prs = self._get_results(involved_prs_response)
 
         return {
             "created_issues": created_issues,
             "closed_issues": closed_issues,
             "merged_prs": merged_prs,
             "reviewed_prs": reviewed_prs,
-            "involved_prs": involved_prs,
         }
