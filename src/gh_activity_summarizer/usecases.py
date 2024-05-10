@@ -37,10 +37,12 @@ def print_activity_summary_with_llm(period, model_name, stream=True):
         print("Result: \n", result.content)
 
     print("\n\nSummary:")
-    print(f"Total created issues: {github_summary['created_issues']}")
-    print(f"Total closed issues: {github_summary['closed_issues']}")
-    print(f"Total merged PRs: {github_summary['merged_prs']}")
-    print(f"Total reviewed PRs: {github_summary['reviewed_prs']}")
+    print("| Metric | Count |")
+    print("|--------|-------|")
+    print(f"| Total created issues | {github_summary['created_issues']} |")
+    print(f"| Total closed issues | {github_summary['closed_issues']} |")
+    print(f"| Total merged PRs | {github_summary['merged_prs']} |")
+    print(f"| Total reviewed PRs | {github_summary['reviewed_prs']} |")
 
 
 def print_acitivity_summary_without_llm(period: int):
