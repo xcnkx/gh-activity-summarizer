@@ -18,7 +18,6 @@ def print_activity_summary_with_llm(period, model_name, stream=True):
                 "created_issues": github_activity["created_issues"],
                 "closed_issues": github_activity["closed_issues"],
                 "merged_prs": github_activity["merged_prs"],
-                "reviewed_prs": github_activity["reviewed_prs"],
             }
         ):
             print(chunk.content, end="", flush=True)
@@ -29,7 +28,6 @@ def print_activity_summary_with_llm(period, model_name, stream=True):
                 "created_issues": github_activity["created_issues"],
                 "closed_issues": github_activity["closed_issues"],
                 "merged_prs": github_activity["merged_prs"],
-                "reviewed_prs": github_activity["reviewed_prs"],
             },
             max_tokens=1024 * 4,
         )
@@ -42,7 +40,6 @@ def print_activity_summary_with_llm(period, model_name, stream=True):
     print(f"| Total created issues | {github_summary['created_issues']} |")
     print(f"| Total closed issues | {github_summary['closed_issues']} |")
     print(f"| Total merged PRs | {github_summary['merged_prs']} |")
-    print(f"| Total reviewed PRs | {github_summary['reviewed_prs']} |")
 
 
 def print_acitivity_summary_without_llm(period: int):

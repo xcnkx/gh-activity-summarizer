@@ -26,17 +26,12 @@ def get_prompt():
 - [{{ issues.title }}]({{ issues.html_url }}): {{ issues.body }}
 {% endfor %}
 
-## マージされたPR
+## マージしたPR
 ---
 {% for prs in merged_prs %}
 - [{{ prs.title }}]({{ prs.html_url }}): {{ prs.body }}
 {% endfor %}
 
-## レビューしたPR
----
-{% for prs in reviewed_prs %}
-- [{{ prs.title }}]({{ prs.html_url }}): {{ prs.body }}
-{% endfor %}
 
 あなたはソフトウェアエンジニアです。上記のGITHUBの活動情報を元に、あなたの今週の活動を要約してください。
 添付されたGitHubアクティビティのテキストを分析し、以下の項目に分けてmarkdown形式で要約してください。
@@ -50,18 +45,10 @@ def get_prompt():
     *[issueのタイトル](issueのURL)
         * クローズしたIssueについて、その内容を2行で分かりやすく説明してください。
         * クローズしたIssueがない場合は「特になし」と記載してください。
-#### マージされたPR
+#### マージしたPR
     *[PRのタイトル](PRのURL)
         * マージされたPRについて、その内容を2行で分かりやすく説明してください。
         * マージされたPRがない場合は「特になし」と記載してください。
-### レビューしたPR
-    *[PRのタイトル](PRのURL)
-        * レビューを行ったPRについて、その内容を2行で要約してください。
-        * レビューしたPRがない場合は「特になし」と記載してください。
-
-## 総括
-全体的な活動内容について、以下の観点から総括を行ってください。
-* コードの品質向上やシステムの効率化への貢献
 """,  # noqa
         template_format="jinja2",
     )

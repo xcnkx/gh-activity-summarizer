@@ -82,31 +82,15 @@ class GithubAPI:
 
         print("=============================================")
 
-        print("Reviewed PRs:")
-        # Fetch reviewed PRs
-        review_params = {"q": f"reviewed-by:{self.username} type:pr updated:{self.start_date_str}..{self.end_date_str}"}
-        review_response = self._make_request(url, self.auth, review_params)
-        self.print_results(review_response, "reviewed PRs")
-
-        print("=============================================")
-        # Fetch involved PRs
-        involved_prs_params = {
-            "q": f"involves:{self.username} type:pr updated:{self.start_date_str}..{self.end_date_str}"
-        }
-        involved_prs_response = self._make_request(url, self.auth, involved_prs_params)
-        self.print_results(involved_prs_response, "involved PRs")
-
         # Print the summary of the activity
         print("=============================================")
         print("Summary:")
         created_issues_count = created_issues_response.json()["total_count"]
         closed_issues_count = closed_issues_response.json()["total_count"]
         merged_prs_count = merged_prs_response.json()["total_count"]
-        reviewed_prs_count = review_response.json()["total_count"]
         print(f"Total created issues: {created_issues_count}")
         print(f"Total closed issues: {closed_issues_count}")
         print(f"Total merged PRs: {merged_prs_count}")
-        print(f"Total reviewed PRs: {reviewed_prs_count}")
 
     def get_github_activity_summary(self) -> dict[str, int]:
         url = "https://api.github.com/search/issues"
@@ -124,19 +108,14 @@ class GithubAPI:
         merged_prs_params = {"q": f"author:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
         merged_prs_response = self._make_request(url, self.auth, merged_prs_params)
 
-        review_params = {"q": f"reviewed-by:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
-        review_response = self._make_request(url, self.auth, review_params)
-
         created_issues_count = created_issues_response.json()["total_count"]
         closed_issues_count = closed_issues_response.json()["total_count"]
         merged_prs_count = merged_prs_response.json()["total_count"]
-        reviewed_prs_count = review_response.json()["total_count"]
 
         return {
             "created_issues": created_issues_count,
             "closed_issues": closed_issues_count,
             "merged_prs": merged_prs_count,
-            "reviewed_prs": reviewed_prs_count,
         }
 
     def get_all_github_activity(self) -> dict[str, list[dict[str, str]] | None]:
@@ -158,13 +137,8 @@ class GithubAPI:
         merged_prs_response = self._make_request(url, self.auth, merged_prs_params)
         merged_prs = self._get_results(merged_prs_response)
 
-        review_params = {"q": f"reviewed-by:{self.username} type:pr merged:{self.start_date_str}..{self.end_date_str}"}
-        review_response = self._make_request(url, self.auth, review_params)
-        reviewed_prs = self._get_results(review_response)
-
         return {
             "created_issues": created_issues,
             "closed_issues": closed_issues,
             "merged_prs": merged_prs,
-            "reviewed_prs": reviewed_prs,
         }
